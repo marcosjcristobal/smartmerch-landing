@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SmartMerch AI + Tagger | Forecasting y Scan-to-Sale para merch y retail independiente</title>
+  <meta name="description" content="SmartMerch AI + Tagger: previsión de demanda por SKU/talla/ciudad, pricing dinámico práctico y ventas presenciales por escaneo (Scan-to-Sale) para merch y retail independiente." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="SmartMerch AI + Tagger" />
+  <meta property="og:description" content="Forecasting por SKU/talla/ciudad + recomendación de tiradas y pricing + Scan-to-Sale integrado para merch y retail pequeño." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="es_ES" />
+
+  <!-- Favicon (placeholder) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%23111'/%3E%3Cpath d='M14 30V18h8c3.5 0 6 2.2 6 5.3S25.5 28 22 28h-4v2h-4zm4-6h4c1.3 0 2-.7 2-1.7S23.3 20.6 22 20.6h-4V24z' fill='white'/%3E%3C/svg%3E" />
+
+  <style>
+    :root{
+      --bg: #0b0c10;
+      --surface: #11131a;
+      --surface-2: #0f1016;
+      --text: #eef1ff;
+      --muted: #b8bdd8;
+      --border: rgba(255,255,255,.10);
+      --accent: #7c5cff;
+      --accent-2: #20c997;
+      --warn: #ffd166;
+      --shadow: 0 14px 40px rgba(0,0,0,.35);
+      --radius: 18px;
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 700px at 20% -10%, rgba(124,92,255,.25), transparent 60%),
+                  radial-gradient(900px 600px at 90% 10%, rgba(32,201,151,.18), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    a { color: inherit; }
+    .container { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+
+    /* Accessibility */
+    .skip-link {
+      position: absolute;
+      left: -999px;
+      top: 10px;
+      background: var(--text);
+      color: #000;
+      padding: 10px 12px;
+      border-radius: 10px;
+      z-index: 9999;
+    }
+    .skip-link:focus { left: 16px; outline: none; }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      background: rgba(11,12,16,.65);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      letter-spacing: .2px;
+      white-space: nowrap;
+    }
+    .logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(32,201,151,.85));
+      box-shadow: var(--shadow);
+    }
+    .logo svg { width: 18px; height: 18px; }
+
+    nav ul {
+      display: flex;
+      gap: 12px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    nav a {
+      text-decoration: none;
+      font-size: 14px;
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+    }
+    nav a:hover { color: var(--text); border-color: var(--border); background: rgba(255,255,255,.03); }
+    nav a:focus-visible { outline: 3px solid rgba(124,92,255,.55); outline-offset: 2px; }
+
+    /* Sections */
+    section { padding: 56px 0; }
+    .grid-2 { display: grid; grid-template-columns: 1.15fr .85fr; gap: 28px; align-items: start; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .card.pad { padding: 20px; }
+
+    .kicker {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      font-size: 13px;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 99px;
+      background: var(--accent-2);
+      box-shadow: 0 0 0 6px rgba(32,201,151,.12);
+    }
+
+    h1 { font-size: clamp(30px, 4vw, 46px); line-height: 1.12; margin: 14px 0 10px; }
+    h2 { font-size: clamp(22px, 2.4vw, 30px); margin: 0 0 12px; }
+    h3 { font-size: 16px; margin: 0 0 8px; }
+    p  { color: var(--muted); margin: 0 0 14px; }
+    .lead { font-size: 18px; color: rgba(238,241,255,.9); }
+
+    .btn-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 650;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      min-height: 44px;
+    }
+    .btn.primary {
+      background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(124,92,255,.55));
+      border-color: rgba(124,92,255,.55);
+    }
+    .btn.secondary {
+      background: rgba(255,255,255,.03);
+    }
+    .btn:hover { filter: brightness(1.06); }
+    .btn:focus-visible { outline: 3px solid rgba(124,92,255,.55); outline-offset: 2px; }
+
+    .bullets { margin: 14px 0 0; padding-left: 18px; color: var(--muted); }
+    .bullets li { margin: 8px 0; }
+    .metric {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .pill {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.02);
+    }
+    .pill b { color: var(--text); }
+    .icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: rgba(124,92,255,.14);
+      border: 1px solid rgba(124,92,255,.25);
+      flex: 0 0 auto;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 10px;
+      align-items: center;
+    }
+    .step {
+      padding: 12px 12px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.02);
+      min-height: 74px;
+    }
+    .step small { display: block; color: var(--muted); margin-bottom: 4px; }
+    .arrow {
+      text-align: center;
+      color: rgba(238,241,255,.75);
+      font-size: 18px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: rgba(238,241,255,.9);
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      padding: 6px 10px;
+      border-radius: 999px;
+      margin: 8px 6px 0 0;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .table th, .table td {
+      padding: 12px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .table th { color: rgba(238,241,255,.9); background: rgba(255,255,255,.03); font-weight: 700; }
+    .table td { color: var(--muted); background: rgba(255,255,255,.015); }
+    .table tr:last-child td { border-bottom: 0; }
+
+    .form {
+      display: grid;
+      gap: 12px;
+    }
+    label { font-size: 14px; color: rgba(238,241,255,.9); }
+    input, textarea {
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.25);
+      color: var(--text);
+      font: inherit;
+    }
+    textarea { min-height: 120px; resize: vertical; }
+    input:focus-visible, textarea:focus-visible {
+      outline: 3px solid rgba(32,201,151,.45);
+      outline-offset: 2px;
+    }
+    .notice {
+      font-size: 13px;
+      color: rgba(238,241,255,.8);
+      border-left: 3px solid rgba(255,209,102,.75);
+      padding: 10px 12px;
+      background: rgba(255,209,102,.08);
+      border-radius: 12px;
+      border: 1px solid rgba(255,209,102,.18);
+    }
+
+    footer {
+      padding: 30px 0 40px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .small { font-size: 13px; color: var(--muted); }
+    .muted { color: var(--muted); }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .flow { grid-template-columns: 1fr; }
+      .arrow { display: none; }
+      nav ul { display: none; }
+    }
+    @media (max-width: 560px) {
+      .grid-3 { grid-template-columns: 1fr; }
+      .grid-4 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <header>
+    <div class="container nav" aria-label="Barra de navegación">
+      <a class="brand" href="#top">
+        <span class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M7 16V8h5.2c2.2 0 3.8 1.4 3.8 3.3S14.4 15 12.2 15H10v1H7z" fill="white" opacity=".95"/>
+            <path d="M10 12.8h2.2c.9 0 1.4-.5 1.4-1.2s-.5-1.2-1.4-1.2H10v2.4z" fill="white"/>
+          </svg>
+        </span>
+        <span>SmartMerch AI + Tagger</span>
+      </a>
+
+      <nav aria-label="Secciones">
+        <ul>
+          <li><a href="#problema">Problema</a></li>
+          <li><a href="#solucion">Solución</a></li>
+          <li><a href="#flujo">Flujo</a></li>
+          <li><a href="#modulos">Módulos</a></li>
+          <li><a href="#diferenciales">Diferenciales</a></li>
+          <li><a href="#mercado">Mercado</a></li>
+          <li><a href="#roadmap">Roadmap</a></li>
+          <li><a href="#equipo">Equipo</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+
+      <a class="btn primary" href="#contacto">Solicitar demo</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section id="top" aria-label="Introducción">
+      <div class="container grid-2">
+        <div>
+          <span class="kicker"><span class="dot" aria-hidden="true"></span> MVP para merch y retail independiente</span>
+          <h1>Previsión de demanda y pricing dinámico, con ventas presenciales por escaneo.</h1>
+          <p class="lead">
+            Un SaaS ligero que predice demanda por <b>SKU/talla/ciudad</b>, recomienda <b>tiradas y precio</b> y
+            registra ventas presenciales en segundos con <b>Scan-to-Sale</b> (Tagger), actualizando inventario en tiempo real.
+          </p>
+
+          <div class="btn-row" role="group" aria-label="Llamadas a la acción">
+            <a class="btn primary" href="#contacto">Solicitar demo / piloto</a>
+            <a class="btn secondary" href="#flujo">Ver cómo funciona</a>
+          </div>
+
+          <div style="margin-top:18px;">
+            <span class="tag">Demanda intermitente (eventos)</span>
+            <span class="tag">Bajo TCO, despliegue rápido</span>
+            <span class="tag">RGPD por diseño</span>
+          </div>
+        </div>
+
+        <div class="card pad" aria-label="Resumen rápido">
+          <h3>Qué obtienes</h3>
+          <div class="metric">
+            <div class="pill">
+              <div class="icon" aria-hidden="true">⏱</div>
+              <div><b>Menos tiempo operativo</b><br><span class="muted">Del mostrador al dashboard sin tecleo.</span></div>
+            </div>
+            <div class="pill">
+              <div class="icon" aria-hidden="true">📦</div>
+              <div><b>Menos roturas y menos sobrestock</b><br><span class="muted">Recomendaciones con restricciones reales.</span></div>
+            </div>
+            <div class="pill">
+              <div class="icon" aria-hidden="true">📈</div>
+              <div><b>Decisiones en minutos</b><br><span class="muted">Simulador interpretable para perfiles no técnicos.</span></div>
+            </div>
+          </div>
+
+          <hr style="border:0;border-top:1px solid var(--border);margin:18px 0;">
+
+          <p class="small">
+            Enfoque: circuito cerrado <b>scan-to-sale → unificación de datos → previsión → recomendación</b>.
+            Ideal para catálogos pequeños y demanda intermitente.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROBLEMA -->
+    <section id="problema" aria-label="Problema">
+      <div class="container grid-2">
+        <div>
+          <h2>El merch se decide “a ojo” y se ejecuta a mano.</h2>
+          <p>
+            En bandas emergentes y retail pequeño, el merchandising es crítico para ingresos, pero suele gestionarse con procesos manuales:
+            inventario desactualizado, ventas presenciales registradas tarde (o nunca) y decisiones de reposición y precio sin soporte analítico.
+            El resultado: <b>roturas en eventos clave</b>, <b>exceso de inventario inmovilizado</b> y <b>tiempo perdido</b>.
+          </p>
+          <ul class="bullets">
+            <li>Roturas por tallas/ciudades clave y ventas perdidas.</li>
+            <li>Stock sobrante tras eventos y capital bloqueado.</li>
+            <li>Datos dispersos (online + presencial) sin trazabilidad.</li>
+            <li>Errores humanos por registro manual de ventas e inventario.</li>
+          </ul>
+        </div>
+        <div class="card pad">
+          <h3>Señales típicas</h3>
+          <ul class="bullets">
+            <li>“No sé qué tallas llevar al próximo bolo.”</li>
+            <li>“Vendimos mucho, pero no quedó bien registrado.”</li>
+            <li>“Tengo cajas de stock parado del drop anterior.”</li>
+            <li>“No puedo dedicar a nadie a analítica de inventario.”</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOLUCIÓN -->
+    <section id="solucion" aria-label="Solución">
+      <div class="container">
+        <h2>Un circuito cerrado: capturar → conciliar → predecir → recomendar.</h2>
+        <p>
+          <b>SmartMerch AI</b> integra datos de ventas, costes y (opcionalmente) señales de audiencia para generar
+          <b>previsión por SKU/talla/ciudad</b> y recomendaciones prácticas de <b>tiradas y pricing</b>.
+          La extensión clave es <b>Tagger (Scan-to-Sale & Labeling)</b>: etiquetas + escaneo para registrar ventas presenciales en segundos,
+          alimentando la analítica en tiempo real y reduciendo errores.
+        </p>
+
+        <div class="grid-3" style="margin-top:18px;">
+          <div class="card pad">
+            <h3>Forecasting específico</h3>
+            <p>Demanda intermitente y series cortas (eventos y drops), con jerarquía SKU→talla→ciudad.</p>
+          </div>
+          <div class="card pad">
+            <h3>Recomendación operable</h3>
+            <p>Tiradas y precio con simulador y restricciones reales (coste, lead time, weeks of cover).</p>
+          </div>
+          <div class="card pad">
+            <h3>Scan-to-Sale integrado</h3>
+            <p>Escaneo de QR/Code-128 para ventas presenciales: menos tecleo, inventario al día.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLUJO -->
+    <section id="flujo" aria-label="Cómo funciona">
+      <div class="container">
+        <h2>Cómo funciona (end-to-end)</h2>
+        <p>Un flujo continuo y sencillo: catálogo → etiquetado → scan-to-sale → conciliación → pronóstico → recomendaciones → dashboard.</p>
+
+        <div class="flow" role="list" aria-label="Flujo del producto">
+          <div class="step" role="listitem"><small>Paso 1</small><b>Catálogo</b><br><span class="muted">SKUs, tallas, canales, ciudad.</span></div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="step" role="listitem"><small>Paso 2</small><b>Etiquetado</b><br><span class="muted">ZPL/EPL + QR/Code-128.</span></div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="step" role="listitem"><small>Paso 3</small><b>Scan-to-Sale</b><br><span class="muted">Venta presencial por escaneo.</span></div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="step" role="listitem"><small>Paso 4</small><b>Conciliación</b><br><span class="muted">Offline + deduplicación.</span></div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="step" role="listitem"><small>Paso 5</small><b>Forecast & Reco</b><br><span class="muted">Pronóstico + simulador.</span></div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="step" role="listitem"><small>Paso 6</small><b>Dashboard</b><br><span class="muted">KPI, alertas, export.</span></div>
+        </div>
+
+        <div class="card pad" style="margin-top:18px;">
+          <h3>Resultado</h3>
+          <p class="small">
+            Inventario siempre actualizado, previsión accionable y recomendaciones listas para ejecutar: qué producir, cuánto y a qué precio,
+            con trazabilidad y reglas claras.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MÓDULOS -->
+    <section id="modulos" aria-label="Módulos y funcionalidades">
+      <div class="container">
+        <h2>Módulos / Funcionalidades</h2>
+        <p>Arquitectura ligera y modular, diseñada para implantación rápida y catálogos reducidos.</p>
+
+        <div class="grid-3" style="margin-top:18px;">
+          <div class="card pad">
+            <h3>Data Mart + gobierno del dato</h3>
+            <p>Modelo unificado (SKU/variantes/tallas/canal/ciudad) con reglas de calidad, linaje y enfoque multi-tenant.</p>
+          </div>
+          <div class="card pad">
+            <h3>Tagger (Scan-to-Sale & Labeling)</h3>
+            <p>ZPL/EPL, QR/Code-128, app/escáner BT, modo offline (cola + sync), idempotencia y deduplicación.</p>
+          </div>
+          <div class="card pad">
+            <h3>Forecasting (series cortas)</h3>
+            <p>Demanda intermitente y jerárquico SKU→talla→ciudad, backtesting y cold-start con priors opt-in.</p>
+          </div>
+
+          <div class="card pad">
+            <h3>Recomendador + simulador</h3>
+            <p>Tiradas y pricing con restricciones reales (coste, lead time, weeks of cover, riesgo stock-out) y reglas explicables.</p>
+          </div>
+          <div class="card pad">
+            <h3>Dashboard KPI + export</h3>
+            <p>Inventario, previsión, recomendación, alertas; exportación CSV y endpoints API.</p>
+          </div>
+          <div class="card pad">
+            <h3>RGPD / Privacidad por diseño</h3>
+            <p>Minimización, roles y trazabilidad; opt-in/opt-out de agregados anónimos con umbrales de anonimato.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIFERENCIALES -->
+    <section id="diferenciales" aria-label="Diferenciales">
+      <div class="container">
+        <h2>Diferenciales</h2>
+        <p>Específico para merch indie y retail pequeño: no es solo reporting, es decisión operativa.</p>
+
+        <table class="table" aria-label="Comparativa de alternativas">
+          <thead>
+            <tr>
+              <th>Alternativa</th>
+              <th>Limitación típica</th>
+              <th>Qué aporta SmartMerch AI + Tagger</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>BI genérico</td>
+              <td>Visualiza histórico; no recomienda tiradas ni precio.</td>
+              <td>Forecast + recomendación interpretable y operable.</td>
+            </tr>
+            <tr>
+              <td>POS / e-commerce</td>
+              <td>Reporting básico; sin previsión SKU/talla/ciudad ni simulación.</td>
+              <td>Ciclo cerrado con scan-to-sale y decisiones listas.</td>
+            </tr>
+            <tr>
+              <td>ERP / planning</td>
+              <td>Caro, sobredimensionado y lento de implantar.</td>
+              <td>Despliegue rápido y bajo TCO para catálogos pequeños.</td>
+            </tr>
+            <tr>
+              <td>Hardware suelto</td>
+              <td>Etiqueta/escanea, pero no convierte datos en decisiones.</td>
+              <td>Scan-to-sale alimenta analítica en tiempo real.</td>
+            </tr>
+            <tr>
+              <td>Pricing enterprise</td>
+              <td>Optimizado para grandes volúmenes; poco útil en series cortas.</td>
+              <td>Modelos adecuados a demanda intermitente + priors opt-in.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- MERCADO -->
+    <section id="mercado" aria-label="Mercado">
+      <div class="container grid-2">
+        <div>
+          <h2>Mercado objetivo</h2>
+          <p>Un producto específico, ligero y asequible para operaciones con catálogo pequeño y demanda intermitente.</p>
+          <ul class="bullets">
+            <li>Bandas/artistas y su merch (ventas en directos + online).</li>
+            <li>Marcas indie y diseñadores con series cortas y drops.</li>
+            <li>Tiendas locales y colectivas (moda, streetwear, clubes).</li>
+            <li>Eventos culturales/educativos con ventas temporales.</li>
+          </ul>
+        </div>
+        <div class="card pad">
+          <h3>Casos de uso</h3>
+          <ul class="bullets">
+            <li>Reposición y compra (cuánto producir / reponer).</li>
+            <li>Precio dinámico práctico (sin complejidad innecesaria).</li>
+            <li>Conciliación inventario-ventas (online + presencial).</li>
+            <li>Planificación de drops y eventos.</li>
+            <li>Operación y formación (playbooks y procedimientos).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section id="roadmap" aria-label="Roadmap y metodología">
+      <div class="container">
+        <h2>Roadmap y metodología</h2>
+        <p>Ejecución híbrida: una fase inicial predictiva (P0) para dejar bases y compras listas, y sprints Scrum de 2 semanas (S1–S6) para construir MVP y piloto.</p>
+
+        <div class="grid-3" style="margin-top:18px;">
+          <div class="card pad">
+            <h3>P0 (Predictivo)</h3>
+            <p>Alcance, plan de datos, compras del kit, riesgos, contratos de datos, política SKU y cronograma base.</p>
+          </div>
+          <div class="card pad">
+            <h3>S1–S2 (Captura y datos)</h3>
+            <p>Modelo de datos + catálogo + plantillas de etiqueta; Tagger v1 con offline, idempotencia y conciliación.</p>
+          </div>
+          <div class="card pad">
+            <h3>S3–S6 (Modelos + panel)</h3>
+            <p>Forecasting base e intermitente/jerárquico; recomendador con simulador; dashboard KPI + roles y RGPD.</p>
+          </div>
+        </div>
+
+        <div class="card pad" style="margin-top:18px;">
+          <h3>Entregables por sprint (resumen)</h3>
+          <ul class="bullets">
+            <li><b>S1:</b> Data model & catálogo (calidad/linaje) + plantillas etiqueta.</li>
+            <li><b>S2:</b> Tagger v1 + offline + idempotencia + conciliación + CSV/webhooks básicos.</li>
+            <li><b>S3:</b> Forecasting base + calendario eventos + backtesting.</li>
+            <li><b>S4:</b> Intermitente & jerárquico SKU→talla→ciudad + priors opt-in.</li>
+            <li><b>S5:</b> Recomendador (tiradas & pricing) + simulador + restricciones + A/B opcional.</li>
+            <li><b>S6:</b> Dashboard KPI + export CSV/API + roles + RGPD por diseño.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- EQUIPO -->
+    <section id="equipo" aria-label="Equipo">
+      <div class="container">
+        <h2>Equipo (roles tipo)</h2>
+        <p>Equipo reducido con responsabilidades claras para ejecutar MVP, integración y piloto real.</p>
+
+        <div class="grid-4" style="margin-top:18px;">
+          <div class="card pad">
+            <h3>PM / Scrum</h3>
+            <p>Alcance, priorización, riesgos, compras, comunicación y coordinación de sprints.</p>
+          </div>
+          <div class="card pad">
+            <h3>Data Lead</h3>
+            <p>Modelo de datos, forecasting y validación (backtesting), métricas y soporte al recomendador.</p>
+          </div>
+          <div class="card pad">
+            <h3>Dev Full-stack</h3>
+            <p>API, Tagger app/offline, integraciones POS, dashboard web y seguridad básica.</p>
+          </div>
+          <div class="card pad">
+            <h3>Ops / Legal</h3>
+            <p>Política SKU, QA etiquetas/escaneo, playbooks y formación; RGPD ad-hoc (DPA, minimización, accesos).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contacto" aria-label="Contacto">
+      <div class="container grid-2">
+        <div>
+          <h2>¿Quieres evaluar un piloto en un evento real?</h2>
+          <p>
+            Buscamos 1–2 pilotos con bandas/tiendas para validar el flujo completo:
+            etiquetado → scan-to-sale → previsión → recomendación → decisiones.
+          </p>
+          <div class="notice">
+            Nota: este formulario es un <b>mock</b>. En despliegue se integra con email/CRM (p. ej., Formspree, Netlify Forms o webhook).
+          </div>
+          <div class="btn-row" style="margin-top:18px;">
+            <a class="btn primary" href="#top">Volver arriba</a>
+            <a class="btn secondary" href="#diferenciales">Ver diferenciales</a>
+          </div>
+        </div>
+
+        <div class="card pad">
+          <h3>Contacto</h3>
+          <form class="form" id="contactForm">
+            <div>
+              <label for="name">Nombre</label>
+              <input id="name" name="name" type="text" autocomplete="name" required />
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <div>
+              <label for="msg">Mensaje</label>
+              <textarea id="msg" name="message" required placeholder="Cuéntame tu caso: tipo de catálogo, canales, y si vendes en eventos."></textarea>
+            </div>
+            <button class="btn primary" type="submit">Enviar solicitud</button>
+            <p class="small" id="formStatus" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <footer aria-label="Pie de página">
+      <div class="container footer-row">
+        <div class="small">
+          © <span id="year"></span> SmartMerch AI + Tagger · MVP para merch y retail independiente
+        </div>
+        <div class="small">
+          Privacidad por diseño · Multi-tenant · Opt-in de agregados anónimos
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Lightweight, no dependencies
+    (function () {
+      const year = document.getElementById("year");
+      if (year) year.textContent = new Date().getFullYear();
+
+      const form = document.getElementById("contactForm");
+      const status = document.getElementById("formStatus");
+
+      if (form) {
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          if (status) {
+            status.textContent = "Recibido (mock). Integra este formulario con email/CRM en despliegue.";
+          }
+          form.reset();
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
