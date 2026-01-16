@@ -166,6 +166,7 @@
       background: rgba(255,255,255,.03);
       color: var(--text);
       min-height: 44px;
+      cursor: pointer;
     }
     .btn.primary {
       background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(124,92,255,.55));
@@ -179,11 +180,8 @@
 
     .bullets { margin: 14px 0 0; padding-left: 18px; color: var(--muted); }
     .bullets li { margin: 8px 0; }
-    .metric {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
+
+    .metric { display: grid; grid-template-columns: 1fr; gap: 10px; }
     .pill {
       display: flex;
       gap: 10px;
@@ -219,11 +217,7 @@
       min-height: 74px;
     }
     .step small { display: block; color: var(--muted); margin-bottom: 4px; }
-    .arrow {
-      text-align: center;
-      color: rgba(238,241,255,.75);
-      font-size: 18px;
-    }
+    .arrow { text-align: center; color: rgba(238,241,255,.75); font-size: 18px; }
 
     .tag {
       display: inline-flex;
@@ -255,10 +249,7 @@
     .table td { color: var(--muted); background: rgba(255,255,255,.015); }
     .table tr:last-child td { border-bottom: 0; }
 
-    .form {
-      display: grid;
-      gap: 12px;
-    }
+    .form { display: grid; gap: 12px; }
     label { font-size: 14px; color: rgba(238,241,255,.9); }
     input, textarea {
       width: 100%;
@@ -274,6 +265,7 @@
       outline: 3px solid rgba(32,201,151,.45);
       outline-offset: 2px;
     }
+
     .notice {
       font-size: 13px;
       color: rgba(238,241,255,.8);
@@ -337,13 +329,14 @@
           <li><a href="#modulos">Módulos</a></li>
           <li><a href="#diferenciales">Diferenciales</a></li>
           <li><a href="#mercado">Mercado</a></li>
+          <li><a href="#estado">Estado</a></li>
           <li><a href="#roadmap">Roadmap</a></li>
           <li><a href="#equipo">Equipo</a></li>
           <li><a href="#contacto">Contacto</a></li>
         </ul>
       </nav>
 
-      <a class="btn primary" href="#contacto">Solicitar demo</a>
+      <a class="btn primary" href="#contacto">Contactar</a>
     </div>
   </header>
 
@@ -352,15 +345,15 @@
     <section id="top" aria-label="Introducción">
       <div class="container grid-2">
         <div>
-          <span class="kicker"><span class="dot" aria-hidden="true"></span> MVP para merch y retail independiente</span>
+          <span class="kicker"><span class="dot" aria-hidden="true"></span> Presentación del proyecto (fase MVP)</span>
           <h1>Previsión de demanda y pricing dinámico, con ventas presenciales por escaneo.</h1>
           <p class="lead">
-            Un SaaS ligero que predice demanda por <b>SKU/talla/ciudad</b>, recomienda <b>tiradas y precio</b> y
-            registra ventas presenciales en segundos con <b>Scan-to-Sale</b> (Tagger), actualizando inventario en tiempo real.
+            <b>SmartMerch AI + Tagger</b> es una propuesta SaaS para merch y retail independiente: predice demanda por <b>SKU/talla/ciudad</b>,
+            recomienda <b>tiradas y precio</b> y captura ventas presenciales mediante <b>Scan-to-Sale</b>, manteniendo inventario y analítica coherentes.
           </p>
 
-          <div class="btn-row" role="group" aria-label="Llamadas a la acción">
-            <a class="btn primary" href="#contacto">Solicitar demo / piloto</a>
+          <div class="btn-row" role="group" aria-label="Acciones principales">
+            <a class="btn primary" href="#contacto">Solicitar información</a>
             <a class="btn secondary" href="#flujo">Ver cómo funciona</a>
           </div>
 
@@ -371,20 +364,20 @@
           </div>
         </div>
 
-        <div class="card pad" aria-label="Resumen rápido">
-          <h3>Qué obtienes</h3>
+        <div class="card pad" aria-label="Resumen ejecutivo">
+          <h3>Resumen ejecutivo</h3>
           <div class="metric">
             <div class="pill">
-              <div class="icon" aria-hidden="true">⏱</div>
-              <div><b>Menos tiempo operativo</b><br><span class="muted">Del mostrador al dashboard sin tecleo.</span></div>
+              <div class="icon" aria-hidden="true">📦</div>
+              <div><b>Menos roturas y menos sobrestock</b><br><span class="muted">Decisiones de compra y reposición con soporte analítico.</span></div>
             </div>
             <div class="pill">
-              <div class="icon" aria-hidden="true">📦</div>
-              <div><b>Menos roturas y menos sobrestock</b><br><span class="muted">Recomendaciones con restricciones reales.</span></div>
+              <div class="icon" aria-hidden="true">🧾</div>
+              <div><b>Captura de ventas presenciales</b><br><span class="muted">Scan-to-Sale para reducir fricción y errores de registro.</span></div>
             </div>
             <div class="pill">
               <div class="icon" aria-hidden="true">📈</div>
-              <div><b>Decisiones en minutos</b><br><span class="muted">Simulador interpretable para perfiles no técnicos.</span></div>
+              <div><b>Recomendaciones operables</b><br><span class="muted">Simulación con restricciones reales (coste, lead time, cobertura).</span></div>
             </div>
           </div>
 
@@ -392,7 +385,7 @@
 
           <p class="small">
             Enfoque: circuito cerrado <b>scan-to-sale → unificación de datos → previsión → recomendación</b>.
-            Ideal para catálogos pequeños y demanda intermitente.
+            Diseñado para catálogos pequeños y demanda intermitente.
           </p>
         </div>
       </div>
@@ -404,13 +397,13 @@
         <div>
           <h2>El merch se decide “a ojo” y se ejecuta a mano.</h2>
           <p>
-            En bandas emergentes y retail pequeño, el merchandising es crítico para ingresos, pero suele gestionarse con procesos manuales:
+            En bandas emergentes y retail pequeño, el merchandising es relevante para ingresos, pero suele gestionarse con procesos manuales:
             inventario desactualizado, ventas presenciales registradas tarde (o nunca) y decisiones de reposición y precio sin soporte analítico.
-            El resultado: <b>roturas en eventos clave</b>, <b>exceso de inventario inmovilizado</b> y <b>tiempo perdido</b>.
+            El resultado: <b>roturas en momentos críticos</b>, <b>stock inmovilizado</b> y <b>tiempo operativo perdido</b>.
           </p>
           <ul class="bullets">
             <li>Roturas por tallas/ciudades clave y ventas perdidas.</li>
-            <li>Stock sobrante tras eventos y capital bloqueado.</li>
+            <li>Exceso de inventario tras eventos y capital bloqueado.</li>
             <li>Datos dispersos (online + presencial) sin trazabilidad.</li>
             <li>Errores humanos por registro manual de ventas e inventario.</li>
           </ul>
@@ -418,9 +411,9 @@
         <div class="card pad">
           <h3>Señales típicas</h3>
           <ul class="bullets">
-            <li>“No sé qué tallas llevar al próximo bolo.”</li>
+            <li>“No sé qué tallas llevar al próximo evento.”</li>
             <li>“Vendimos mucho, pero no quedó bien registrado.”</li>
-            <li>“Tengo cajas de stock parado del drop anterior.”</li>
+            <li>“Tengo stock parado del drop anterior.”</li>
             <li>“No puedo dedicar a nadie a analítica de inventario.”</li>
           </ul>
         </div>
@@ -434,8 +427,8 @@
         <p>
           <b>SmartMerch AI</b> integra datos de ventas, costes y (opcionalmente) señales de audiencia para generar
           <b>previsión por SKU/talla/ciudad</b> y recomendaciones prácticas de <b>tiradas y pricing</b>.
-          La extensión clave es <b>Tagger (Scan-to-Sale & Labeling)</b>: etiquetas + escaneo para registrar ventas presenciales en segundos,
-          alimentando la analítica en tiempo real y reduciendo errores.
+          La pieza diferencial es <b>Tagger (Scan-to-Sale & Labeling)</b>: etiquetas + escaneo para registrar ventas presenciales en segundos,
+          alimentando la analítica y reduciendo errores.
         </p>
 
         <div class="grid-3" style="margin-top:18px;">
@@ -449,7 +442,7 @@
           </div>
           <div class="card pad">
             <h3>Scan-to-Sale integrado</h3>
-            <p>Escaneo de QR/Code-128 para ventas presenciales: menos tecleo, inventario al día.</p>
+            <p>Escaneo QR/Code-128: menos tecleo, inventario coherente, datos unificados.</p>
           </div>
         </div>
       </div>
@@ -459,9 +452,9 @@
     <section id="flujo" aria-label="Cómo funciona">
       <div class="container">
         <h2>Cómo funciona (end-to-end)</h2>
-        <p>Un flujo continuo y sencillo: catálogo → etiquetado → scan-to-sale → conciliación → pronóstico → recomendaciones → dashboard.</p>
+        <p>Flujo operativo propuesto: catálogo → etiquetado → scan-to-sale → conciliación → pronóstico → recomendaciones → dashboard.</p>
 
-        <div class="flow" role="list" aria-label="Flujo del producto">
+        <div class="flow" role="list" aria-label="Flujo del sistema">
           <div class="step" role="listitem"><small>Paso 1</small><b>Catálogo</b><br><span class="muted">SKUs, tallas, canales, ciudad.</span></div>
           <div class="arrow" aria-hidden="true">→</div>
           <div class="step" role="listitem"><small>Paso 2</small><b>Etiquetado</b><br><span class="muted">ZPL/EPL + QR/Code-128.</span></div>
@@ -476,10 +469,10 @@
         </div>
 
         <div class="card pad" style="margin-top:18px;">
-          <h3>Resultado</h3>
+          <h3>Principio clave</h3>
           <p class="small">
-            Inventario siempre actualizado, previsión accionable y recomendaciones listas para ejecutar: qué producir, cuánto y a qué precio,
-            con trazabilidad y reglas claras.
+            La captura de ventas presenciales (Tagger) no es un accesorio: es el mecanismo que cierra el circuito de datos
+            y habilita previsión y recomendación con trazabilidad.
           </p>
         </div>
       </div>
@@ -489,12 +482,12 @@
     <section id="modulos" aria-label="Módulos y funcionalidades">
       <div class="container">
         <h2>Módulos / Funcionalidades</h2>
-        <p>Arquitectura ligera y modular, diseñada para implantación rápida y catálogos reducidos.</p>
+        <p>Arquitectura ligera y modular, con credibilidad técnica “ligera” (sin dependencia de suites pesadas).</p>
 
         <div class="grid-3" style="margin-top:18px;">
           <div class="card pad">
             <h3>Data Mart + gobierno del dato</h3>
-            <p>Modelo unificado (SKU/variantes/tallas/canal/ciudad) con reglas de calidad, linaje y enfoque multi-tenant.</p>
+            <p>Modelo unificado (SKU/variantes/tallas/canal/ciudad) con calidad, linaje y enfoque multi-tenant.</p>
           </div>
           <div class="card pad">
             <h3>Tagger (Scan-to-Sale & Labeling)</h3>
@@ -507,11 +500,11 @@
 
           <div class="card pad">
             <h3>Recomendador + simulador</h3>
-            <p>Tiradas y pricing con restricciones reales (coste, lead time, weeks of cover, riesgo stock-out) y reglas explicables.</p>
+            <p>Tiradas y pricing con restricciones reales (coste, lead time, cobertura y riesgo stock-out), con reglas explicables.</p>
           </div>
           <div class="card pad">
             <h3>Dashboard KPI + export</h3>
-            <p>Inventario, previsión, recomendación, alertas; exportación CSV y endpoints API.</p>
+            <p>Inventario, previsión, recomendación y alertas; exportación CSV y endpoints API.</p>
           </div>
           <div class="card pad">
             <h3>RGPD / Privacidad por diseño</h3>
@@ -525,26 +518,26 @@
     <section id="diferenciales" aria-label="Diferenciales">
       <div class="container">
         <h2>Diferenciales</h2>
-        <p>Específico para merch indie y retail pequeño: no es solo reporting, es decisión operativa.</p>
+        <p>Específico para merch y retail pequeño: no es solo reporting, es un sistema orientado a decisión operativa.</p>
 
         <table class="table" aria-label="Comparativa de alternativas">
           <thead>
             <tr>
               <th>Alternativa</th>
               <th>Limitación típica</th>
-              <th>Qué aporta SmartMerch AI + Tagger</th>
+              <th>Aporte de SmartMerch AI + Tagger</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>BI genérico</td>
               <td>Visualiza histórico; no recomienda tiradas ni precio.</td>
-              <td>Forecast + recomendación interpretable y operable.</td>
+              <td>Forecast + recomendación interpretable y accionable.</td>
             </tr>
             <tr>
               <td>POS / e-commerce</td>
               <td>Reporting básico; sin previsión SKU/talla/ciudad ni simulación.</td>
-              <td>Ciclo cerrado con scan-to-sale y decisiones listas.</td>
+              <td>Circuito cerrado con scan-to-sale y datos consistentes.</td>
             </tr>
             <tr>
               <td>ERP / planning</td>
@@ -554,7 +547,7 @@
             <tr>
               <td>Hardware suelto</td>
               <td>Etiqueta/escanea, pero no convierte datos en decisiones.</td>
-              <td>Scan-to-sale alimenta analítica en tiempo real.</td>
+              <td>La captura alimenta analítica, previsión y recomendación.</td>
             </tr>
             <tr>
               <td>Pricing enterprise</td>
@@ -571,23 +564,52 @@
       <div class="container grid-2">
         <div>
           <h2>Mercado objetivo</h2>
-          <p>Un producto específico, ligero y asequible para operaciones con catálogo pequeño y demanda intermitente.</p>
+          <p>Propuesta orientada a operaciones con catálogo pequeño, variabilidad alta y picos por eventos.</p>
           <ul class="bullets">
-            <li>Bandas/artistas y su merch (ventas en directos + online).</li>
-            <li>Marcas indie y diseñadores con series cortas y drops.</li>
+            <li>Bandas/artistas (ventas en directos + online).</li>
+            <li>Marcas indie y diseñadores (series cortas y drops).</li>
             <li>Tiendas locales y colectivas (moda, streetwear, clubes).</li>
-            <li>Eventos culturales/educativos con ventas temporales.</li>
+            <li>Eventos culturales/educativos con venta temporal.</li>
           </ul>
         </div>
         <div class="card pad">
           <h3>Casos de uso</h3>
           <ul class="bullets">
-            <li>Reposición y compra (cuánto producir / reponer).</li>
+            <li>Planificación de compras y reposición.</li>
             <li>Precio dinámico práctico (sin complejidad innecesaria).</li>
             <li>Conciliación inventario-ventas (online + presencial).</li>
             <li>Planificación de drops y eventos.</li>
-            <li>Operación y formación (playbooks y procedimientos).</li>
+            <li>Playbooks operativos (etiquetado, venta, control de stock).</li>
           </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ESTADO -->
+    <section id="estado" aria-label="Estado del proyecto">
+      <div class="container grid-2">
+        <div>
+          <h2>Estado del proyecto</h2>
+          <p>
+            Esta web presenta el concepto, el alcance funcional y el plan de ejecución del proyecto.
+            El enfoque se centra en viabilidad técnica, diferenciación y coherencia del flujo end-to-end.
+          </p>
+          <ul class="bullets">
+            <li><b>Propuesta de valor:</b> forecasting + recomendación + captura presencial (scan-to-sale) en un circuito cerrado.</li>
+            <li><b>Arquitectura modular:</b> Tagger, Data Mart, modelos, dashboard, RGPD por diseño.</li>
+            <li><b>Despliegue:</b> orientado a bajo TCO y operación ligera.</li>
+          </ul>
+        </div>
+
+        <div class="card pad">
+          <h3>Qué se puede validar</h3>
+          <p class="small">
+            Para evaluación de emprendimiento, se priorizan: problema, propuesta diferencial, mercado objetivo y plan de ejecución.
+            La operativa de ventas presenciales (Tagger) actúa como pieza central para calidad de datos y trazabilidad.
+          </p>
+          <div class="notice" style="margin-top:14px;">
+            Si necesitas, puedo añadir una sección de “Métricas de éxito” (KPIs) y un mock visual del dashboard (sin imágenes pesadas).
+          </div>
         </div>
       </div>
     </section>
@@ -596,12 +618,12 @@
     <section id="roadmap" aria-label="Roadmap y metodología">
       <div class="container">
         <h2>Roadmap y metodología</h2>
-        <p>Ejecución híbrida: una fase inicial predictiva (P0) para dejar bases y compras listas, y sprints Scrum de 2 semanas (S1–S6) para construir MVP y piloto.</p>
+        <p>Ejecución híbrida: fase inicial predictiva (P0) para asegurar bases y alcance, y sprints Scrum de 2 semanas (S1–S6) para construir el MVP.</p>
 
         <div class="grid-3" style="margin-top:18px;">
           <div class="card pad">
             <h3>P0 (Predictivo)</h3>
-            <p>Alcance, plan de datos, compras del kit, riesgos, contratos de datos, política SKU y cronograma base.</p>
+            <p>Alcance, plan de datos, compras del kit, riesgos, política SKU y cronograma base.</p>
           </div>
           <div class="card pad">
             <h3>S1–S2 (Captura y datos)</h3>
@@ -631,7 +653,7 @@
     <section id="equipo" aria-label="Equipo">
       <div class="container">
         <h2>Equipo (roles tipo)</h2>
-        <p>Equipo reducido con responsabilidades claras para ejecutar MVP, integración y piloto real.</p>
+        <p>Equipo reducido con responsabilidades claras para ejecutar MVP, integración y operación.</p>
 
         <div class="grid-4" style="margin-top:18px;">
           <div class="card pad">
@@ -644,11 +666,11 @@
           </div>
           <div class="card pad">
             <h3>Dev Full-stack</h3>
-            <p>API, Tagger app/offline, integraciones POS, dashboard web y seguridad básica.</p>
+            <p>API, Tagger app/offline, integraciones, dashboard web y seguridad básica.</p>
           </div>
           <div class="card pad">
             <h3>Ops / Legal</h3>
-            <p>Política SKU, QA etiquetas/escaneo, playbooks y formación; RGPD ad-hoc (DPA, minimización, accesos).</p>
+            <p>Política SKU, QA etiquetas/escaneo, playbooks; RGPD ad-hoc (DPA, minimización, accesos).</p>
           </div>
         </div>
       </div>
@@ -658,10 +680,9 @@
     <section id="contacto" aria-label="Contacto">
       <div class="container grid-2">
         <div>
-          <h2>¿Quieres evaluar un piloto en un evento real?</h2>
+          <h2>Contacto</h2>
           <p>
-            Buscamos 1–2 pilotos con bandas/tiendas para validar el flujo completo:
-            etiquetado → scan-to-sale → previsión → recomendación → decisiones.
+            Si quieres ampliar información (documentación, alcance, arquitectura o roadmap), puedes dejar un mensaje aquí.
           </p>
           <div class="notice">
             Nota: este formulario es un <b>mock</b>. En despliegue se integra con email/CRM (p. ej., Formspree, Netlify Forms o webhook).
@@ -673,7 +694,7 @@
         </div>
 
         <div class="card pad">
-          <h3>Contacto</h3>
+          <h3>Enviar mensaje</h3>
           <form class="form" id="contactForm">
             <div>
               <label for="name">Nombre</label>
@@ -685,9 +706,9 @@
             </div>
             <div>
               <label for="msg">Mensaje</label>
-              <textarea id="msg" name="message" required placeholder="Cuéntame tu caso: tipo de catálogo, canales, y si vendes en eventos."></textarea>
+              <textarea id="msg" name="message" required placeholder="Indica qué te interesa: visión general, módulos, roadmap o propuesta de valor."></textarea>
             </div>
-            <button class="btn primary" type="submit">Enviar solicitud</button>
+            <button class="btn primary" type="submit">Enviar</button>
             <p class="small" id="formStatus" role="status" aria-live="polite"></p>
           </form>
         </div>
@@ -697,7 +718,7 @@
     <footer aria-label="Pie de página">
       <div class="container footer-row">
         <div class="small">
-          © <span id="year"></span> SmartMerch AI + Tagger · MVP para merch y retail independiente
+          © <span id="year"></span> SmartMerch AI + Tagger · Presentación del proyecto (fase MVP)
         </div>
         <div class="small">
           Privacidad por diseño · Multi-tenant · Opt-in de agregados anónimos
@@ -707,11 +728,11 @@
   </main>
 
   <script>
-    // Lightweight, no dependencies
     (function () {
       const year = document.getElementById("year");
       if (year) year.textContent = new Date().getFullYear();
 
+      // Mock form handler (no backend)
       const form = document.getElementById("contactForm");
       const status = document.getElementById("formStatus");
 
@@ -719,7 +740,7 @@
         form.addEventListener("submit", function (e) {
           e.preventDefault();
           if (status) {
-            status.textContent = "Recibido (mock). Integra este formulario con email/CRM en despliegue.";
+            status.textContent = "Mensaje registrado (mock). Integra este formulario con email/CRM para envíos reales.";
           }
           form.reset();
         });
